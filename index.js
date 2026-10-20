@@ -161,6 +161,22 @@ function filterByDeadline() {
   });
 }
 
+// 8. Search task
+function searchTask() {
+  rl.question("Search a task by a word: ", (word) => {
+    if (word.trim === "") {
+      console.log("Type something");
+      return showMenu();
+    }
+
+    todos.filter((todo, i) => {
+      if (todo.text.includes(word)) {
+        console.log(`${i + 1}. ${todo.done ? "✔" : "❌"} ${todo.text}`);
+      }
+    });
+  });
+}
+
 // Show menu
 function showMenu() {
   console.log(`
@@ -174,6 +190,7 @@ function showMenu() {
 5. Delete Task
 6. Filter by Category
 7. Filter by Deadline
+8. Search Task
 0. Exit
 --------------------------------------
         `);
@@ -200,6 +217,9 @@ function showMenu() {
         break;
       case "7":
         filterByDeadline();
+        break;
+      case "8":
+        searchTask();
         break;
       case "0":
         console.log("Goodbye");
