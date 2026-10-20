@@ -164,16 +164,25 @@ function filterByDeadline() {
 // 8. Search task
 function searchTask() {
   rl.question("Search a task by a word: ", (word) => {
-    if (word.trim === "") {
+    const wordCase = word.toString().toLowerCase();
+    if (wordCase.trim() === "") {
       console.log("Type something");
       return showMenu();
     }
 
-    todos.filter((todo, i) => {
-      if (todo.text.includes(word)) {
-        console.log(`${i + 1}. ${todo.done ? "✔" : "❌"} ${todo.text}`);
-      }
+    const matchedTodos = todos.filter((todo) => {
+      return todo.text.toLowerCase().includes(wordCase);
     });
+
+    if (matchedTodos.length > 0) {
+      matchedTodos.forEach((todo, i) => {
+        console.log(`${i + 1}. ${todo.done ? "✔" : "❌"} ${todo.text}`);
+      });
+    } else {
+      console.log("There is no task that matches your description");
+    }
+
+    showMenu();
   });
 }
 
