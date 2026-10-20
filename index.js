@@ -133,11 +133,17 @@ function filterByCategory() {
         showMenu();
       }
 
-      todos.filter((todo, i) => {
-        if (todo.category.toLowerCase() === category.toLowerCase()) {
-          console.log(`${i + 1}. ${todo.done ? "✔" : "❌"} ${todo.text}`);
-        }
+      const matchedCategory = todos.filter((todo) => {
+        return todo.category.toLowerCase() === category.toLowerCase();
       });
+
+      if (matchedCategory.length > 0) {
+        matchedCategory.forEach((todo, i) => {
+          console.log(`${i + 1}. ${todo.done ? "✔" : "❌"} ${todo.text}`);
+        });
+      } else {
+        console.log("Enter valid category");
+      }
 
       showMenu();
     },
@@ -152,11 +158,23 @@ function filterByDeadline() {
       showMenu();
     }
 
-    todos.filter((todo, i) => {
-      if (todo.deadline === date) {
-        console.log(`${i + 1}. ${todo.done ? "✔" : "❌"} ${todo.text}`);
-      }
+    const matchedDeadlines = todos.filter((todo) => {
+      return todo.deadline === date;
     });
+
+    if (matchedDeadlines.length > 0) {
+      matchedDeadlines.forEach((todo, i) => {
+        console.log(`${i + 1}. ${todo.done ? "✔" : "❌"} ${todo.text}`);
+      });
+    } else {
+      console.log("Enter a valid date.");
+    }
+
+    // todos.filter((todo, i) => {
+    //   if (todo.deadline === date) {
+    //     console.log(`${i + 1}. ${todo.done ? "✔" : "❌"} ${todo.text}`);
+    //   }
+    // });
     showMenu();
   });
 }
