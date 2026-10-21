@@ -204,6 +204,49 @@ function searchTask() {
   });
 }
 
+// 9. Sort task
+function sortTask() {
+  rl.question(
+    "How do you want to sort your tasks (Deadline, Category, Status): ",
+    (sort) => {
+      const choice = sort.trim().toLowerCase();
+
+      if (choice === "") {
+        console.log("Enter how you want to sort");
+        return showMenu();
+      }
+
+      if (choice === "deadline") {
+        todos.sort((a, b) => {
+          if (!a.deadline) return 1;
+          if (!b.deadline) return -1;
+
+          return new Date(a.deadline) - new Date(b.deadline);
+        });
+        console.log("\nTasks sorted by deadline (earliest first)!");
+        viewTasks();
+      } else if (choice === "category") {
+        todos.sort((a, b) => {
+          const catA = a.category || "";
+          const catB = b.category || "";
+
+          return catA.localeCompare(catB);
+        });
+        console.log("\nTasks sorted alphabetically by category!");
+        viewTasks();
+      } else if (choice === "status") {
+        todos.sort((a, b) => (a.done === b.done ? 0 : a.done ? 1 : -1));
+        console.log("\nTasks sorted by status (uncompleted first)!");
+        viewTasks();
+      } else {
+        console.log(
+          "Invalid sorting option. Please choose Deadline, Category, or Status.",
+        );
+      }
+    },
+  );
+}
+
 // Show menu
 function showMenu() {
   console.log(`
@@ -218,6 +261,7 @@ function showMenu() {
 6. Filter by Category
 7. Filter by Deadline
 8. Search Task
+9. Sort Task
 0. Exit
 --------------------------------------
         `);
@@ -228,8 +272,8 @@ function showMenu() {
         addTask();
         break;
       case "2":
-        viewTasks();
         break;
+        viewTasks();
       case "3":
         toggleTask();
         break;
@@ -247,6 +291,9 @@ function showMenu() {
         break;
       case "8":
         searchTask();
+        break;
+      case "9":
+        sortTask();
         break;
       case "0":
         console.log("Goodbye");
