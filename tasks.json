@@ -1,26 +1,30 @@
 [
   {
     "text": "Sweep room",
-    "done": true,
+    "done": false,
     "category": "Work",
-    "deadline": "2025-08-17"
+    "deadline": "2025-08-19",
+    "recurrence": "daily"
   },
   {
     "text": "Study CSC 411",
     "done": false,
     "category": "Study",
-    "deadline": "2026-11-10"
+    "deadline": "2026-11-10",
+    "recurrence": "none"
   },
   {
     "text": "Go for checkup",
     "done": true,
     "category": "Personal",
-    "deadline": "2026-10-11"
+    "deadline": "2026-10-11",
+    "recurrence": "monthly"
   },
   {
     "text": "Study Eloquent JS",
     "done": false,
     "category": "Study",
-    "deadline": "2026-10-12"
+    "deadline": "2026-10-12",
+    "recurrence": "none"
   }
 ]

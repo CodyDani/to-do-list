@@ -32,16 +32,21 @@ function addTask() {
 
     rl.question("Enter category (Work/Personal/study): ", (category) => {
       rl.question("Enter deadline (YYYY-MM-DD): ", (deadline) => {
-        todos.push({
-          text: task,
-          done: false,
-          category: category || "General",
-          deadline: deadline || "No deadline",
-        });
-
-        saveTasks();
-        console.log("Task added successfully");
-        showMenu();
+        rl.question(
+          "How often will this task reoccur? (none/daily/weekly/monthly) ",
+          (recurrence) => {
+            todos.push({
+              text: task,
+              done: false,
+              category: category || "General",
+              deadline: deadline || "No deadline",
+              recurrence: recurrence || "none",
+            });
+            saveTasks();
+            console.log("Task added successfully");
+            showMenu();
+          },
+        );
       });
     });
   });
@@ -72,10 +77,29 @@ function toggleTask() {
       return showMenu();
     }
 
-    todos[index].done = !todos[index].done;
+    const reOccur = todos[index].recurrence.toLowerCase();
+
+    if (reOccur === "none") todos[index].done = !todos[index].done;
+    else if (reOccur === "daily") {
+      const newDay = new Date(todos[index].deadline);
+      newDay.setDate(newDay.getDate() + 1);
+      todos[index].deadline = newDay.toISOString().split("T")[0];
+      todos[index].done = false;
+    } else if (reOccur === "weekly") {
+      const newWeek = new Date(todos[index].deadline);
+      newWeek.setDate(newWeek.getDate() + 7);
+      todos[index].deadline = newWeek.toISOString().split("T")[0];
+      todos[index].done = false;
+    } else if (reOccur === "monthly") {
+      const newMonth = new Date(todos[index].deadline);
+      newMonth.setDate(newMonth.getMonth() + 1);
+      todos[index].deadline = newMonth.toISOString().split("T")[0];
+      todos[index].done = false;
+    }
+
     saveTasks();
     console.log("Task status updated!");
-    showMenu();
+    viewTasks();
   });
 }
 
@@ -272,8 +296,8 @@ function showMenu() {
         addTask();
         break;
       case "2":
-        break;
         viewTasks();
+        break;
       case "3":
         toggleTask();
         break;
