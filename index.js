@@ -33,18 +33,27 @@ function addTask() {
     rl.question("Enter category (Work/Personal/study): ", (category) => {
       rl.question("Enter deadline (YYYY-MM-DD): ", (deadline) => {
         rl.question(
-          "How often will this task reoccur? (none/daily/weekly/monthly) ",
+          "How often will this task reoccur? (none/daily/weekly/monthly): ",
           (recurrence) => {
-            todos.push({
-              text: task,
-              done: false,
-              category: category || "General",
-              deadline: deadline || "No deadline",
-              recurrence: recurrence || "none",
-            });
-            saveTasks();
-            console.log("Task added successfully");
-            showMenu();
+            rl.question(
+              "What priority do you want to give this (High, Medium, Low): ",
+              (priorityInput) => {
+                let priority = priorityInput.trim().toLowerCase();
+
+                todos.push({
+                  text: task,
+                  done: false,
+                  category: category || "General",
+                  deadline: deadline || "No deadline",
+                  recurrence: recurrence || "none",
+                  priority: priority || "medium",
+                });
+
+                saveTasks();
+                console.log("Task added successfully");
+                showMenu();
+              },
+            );
           },
         );
       });
@@ -58,7 +67,14 @@ function viewTasks() {
   if (todos.length === 0) {
     console.log("No tasks yet.");
   } else {
-    todos.forEach((t, i) => {
+    const priorityTasks = { high: 1, medium: 2, low: 3 };
+
+    let sortedTasks = [...todos].sort((a, b) => {
+      if (a.done !== b.done) return a.done - b.done;
+      return priorityTasks[a.priority] - priorityTasks[b.priority];
+    });
+
+    sortedTasks.forEach((t, i) => {
       console.log(
         `${i + 1}. ${t.done ? "✔" : "❌"} ${t.text} (Category: ${t.category}, Deadline: ${t.deadline})`,
       );
