@@ -287,6 +287,28 @@ function sortTask() {
   );
 }
 
+function checkDeadlines() {
+  const currentDate = new Date();
+  currentDate.setHours(0, 0, 0, 0);
+
+  const overdueTasks = todos.filter((todo) => {
+    const taskDue = new Date(todo.deadline);
+    taskDue.setHours(0, 0, 0, 0);
+
+    return currentDate > taskDue;
+  });
+
+  if (overdueTasks.length < 1) {
+    console.log("You have no Over due task");
+    return;
+  }
+
+  console.log(`\n Overdue Tasks`);
+  overdueTasks.forEach((task, i) => {
+    console.log(`${i + 1}. "${task.text}" was due on ${task.deadline}`);
+  });
+}
+
 // Show menu
 function showMenu() {
   console.log(`
@@ -348,3 +370,4 @@ function showMenu() {
 
 loadTasks();
 showMenu();
+checkDeadlines();
